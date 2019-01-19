@@ -1,17 +1,25 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Testing this out"/>
+    :::::::::: TODOS :::::::::
+    <List :todos="todos" :updateListFn="updateList" />
+    <Count />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import List from './components/List';
+import Count from './components/Count';
 
 export default {
   name: 'app',
-  components: {
-    HelloWorld
+  data: () => ({
+    todos: ['Buy Groceries', 'Sell Car', 'Upgrade Bicycle']
+  }),
+  components: { List, Count },
+  methods: {
+    updateList: function(updatedList) {
+      this.todos = updatedList;
+    }
   }
 }
 </script>
