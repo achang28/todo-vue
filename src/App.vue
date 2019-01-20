@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     :::::::::: TODOS :::::::::
-    <List :todos="todos" :updateListFn="updateList" />
+    <List :todos="todos" :updateGlobalListFn="updateList" />
     <Count />
   </div>
 </template>
@@ -17,8 +17,9 @@ export default {
   }),
   components: { List, Count },
   methods: {
-    updateList: function(updatedList) {
-      this.todos = updatedList;
+    updateList: function(newTodo, index, fn) {
+      this.todos[index] = newTodo;
+      fn();
     }
   }
 }

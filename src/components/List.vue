@@ -12,40 +12,41 @@
 
 <script>
   import Item from './Item';
-
+  import _clone from 'lodash.clone';
+  
   export default {
     name: 'List',
+    data: () => ({
+      localTodos: null,
+      updated: false
+    }),
     props: {
       todos: Array,
-      updateListFn: Function
+      updateGlobalListFn: Function
     }, // OR an array of props
     components: { Item },
+    beforeMount: function() {
+      // Insertion of blank todo represents new todo
+      this.localTodos = [''].concat(this.todos);
+    },
+    beforeUpdate: function() {
+      if (this.updated) {
+        this.localTodos = _clone(this.todos);
+        this.updated = false;
+      }
+    },
     methods: {
-      updateFn: function(ev, index, action) {
-        // 'action' = CREATE, UPDATE, DELETE
-        var updatedTodos = null;
-        const { value } = ev.target;
-
-        switch (action) {
-          case 'create':
-            updatedTodos = this.todos.concat([value]);
-            break;
-
-          case 'update':
-            updatedTodos = this.todos.concat([]);
-            break;
-
-          case 'delete':
-            var left = this.todos.slice(0, index);
-            var right = this.todos.slice(index +1);
-            updatedTodos = left.concat(right);
-            break;
-
-          default:
-            break;
-        }
-
-        this.updateListFn(updatedTodos);
+      createFn: function(value) { // adds to global todo list
+        this.updateGlobalList(value, 0, () => this.updated = true)
+      },
+      removeFn: function(value, index) { // removes from global todo list
+        this.updateGlobalList(index);
+      },
+      updateGlobalList: function(value, index) {
+        this.updateGlobalListFn(value, index, () => this.updated = true)
+      },
+      updateFn: function(value, index) {
+        this.localTodos[index] = value;
       }
     }
   }

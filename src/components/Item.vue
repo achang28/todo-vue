@@ -3,14 +3,33 @@
     <input
       :value='todo'
       @input='onInput'
-      @blur="validateItem"/>
+      @blur="checkItem"/>
     <span :click='remove'></span>
   </li>
 </template>
 
 <script>
   import _isEmpty from 'lodash.isempty';
+  import _isEqual from 'lodash.isequal';
+  function _extractValue(ev) {
+    const value = ev.target.value || '';
+    return value;
+  }
 
+  /* ACTIONS
+  1. Exit out of input field OR press 'Enter' button
+  - Check for the following:
+    A) Actual data update: Update existing index to new value
+    B) when value is '', remove from list
+   No changes: do nothing
+
+  2. Type, or paste data into input field
+  - Check whether value differs from old value
+  - Different value => update existing list w/ new data
+
+  3. Press "Remove" button
+  - Remove selected todo from existing list
+   */
   export default {
     name: "Item",
     props: {
@@ -19,22 +38,22 @@
       updateFn: Function
     },
     methods: {
-      onInput: function(ev) {
-        this.updateFn(ev, this.index);
+      onInput: function(ev) { // updates local todo list onlo
+        const value = _extractValue(ev);
+        !_isEqual(value, this.todo) && this.updateFn(value, this.index);
       },
-      remove: function(ev) {
-        this.updateFn(ev, this.index, 'remove');
+      remove: function() {
+        this.removeFn(this.index);
       },
-      validateItem: function(ev) {
-        const { value } = ev.target;
-        // When input value is empty, perform different action for...
-        // 1) New Item -- DO NOTHING
+      checkItem: function(ev) {
+        // 1. Same as previous value, don't do anything
+        const value = _extractValue(ev);
 
-        // 2) Existing Item -- REMOVE ITEM FROM LIST
-        if (_isEmpty(value)) {
-          this.remove(ev);
-        } else {
-          this.updateFn(ev, this.index, 'update');
+        if (!_isEqual(value)) {
+          // 2. Remove when empty string ('')
+          if (_isEmpty(value) && this.index > 0) {
+            this.removeFn(this.index);
+          }
         }
       }
     }
