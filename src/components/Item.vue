@@ -1,10 +1,10 @@
 <template>
   <li>
     <input
-      :value='todo'
+      :value='todoValue'
       @input='onInput'
-      @blur="checkItem"/>
-    <span :click='remove'></span>
+      @blur="checkItem" />
+    <a v-if='allowedIndex' @click='remove' href="#">X</a>
   </li>
 </template>
 
@@ -35,7 +35,18 @@
     props: {
       todo: String,
       index: Number,
+      createFn: Function,
+      removeFn: Function,
       updateFn: Function
+    },
+    computed: {
+      todoValue: function() {
+        console.log("Todo #", this.index);
+        return this.todo;
+      },
+      allowedIndex: function() {
+        return this.index > 0;
+      }
     },
     methods: {
       onInput: function(ev) { // updates local todo list onlo
@@ -49,10 +60,13 @@
         // 1. Same as previous value, don't do anything
         const value = _extractValue(ev);
 
-        if (!_isEqual(value)) {
+        if (!_isEqual(value, this.todo)) {
           // 2. Remove when empty string ('')
-          if (_isEmpty(value) && this.index > 0) {
-            this.removeFn(this.index);
+          if (this.index === 0) {
+            this.$el.children[0].value = '';
+            this.createFn(value);
+          } else if (_isEmpty(value)) {
+            this.remove();
           }
         }
       }
