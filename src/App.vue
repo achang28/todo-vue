@@ -11,14 +11,13 @@
         :updateFn='update'
         v-for='(todo, index) in todos' />
     </ul>
-    <Count />
+    <Count :todos="todos" />
   </div>
 </template>
 
 <script>
 import Count from './components/Count';
 import Item from './components/Item';
-import _clone from 'lodash.clone';
 
 export default {
   name: 'app',

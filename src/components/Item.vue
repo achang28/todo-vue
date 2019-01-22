@@ -41,7 +41,7 @@
     },
     computed: {
       todoValue: function() {
-        console.log("Todo #", this.index);
+        window.console.log("Todo #", this.index);
         return this.todo;
       },
       allowedIndex: function() {
