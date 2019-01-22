@@ -11,12 +11,11 @@
         :updateFn='update'
         v-for='(todo, index) in todos' />
     </ul>
-    <Count :todos="todos" />
+    <div>{{count}}</div>
   </div>
 </template>
 
 <script>
-import Count from './components/Count';
 import Item from './components/Item';
 
 export default {
@@ -24,7 +23,21 @@ export default {
   data: () => ({
     todos: ['', 'Buy Groceries', 'Sell Car', 'Upgrade Bicycle']
   }),
-  components: { Item, Count },
+  components: { Item },
+  computed: {
+    count: function() {
+      const length = this.todos.length - 1;
+      var desc = '';
+
+      if (length === 1) {
+        desc = `${length} item`;
+      } else if (length > 1) {
+        desc = `${length} items`;
+      }
+
+      return desc;
+    }
+  },
   methods: {
     create: function(newTodo) { // adds to global todo list
       this.todos = this.todos.concat([newTodo]);
