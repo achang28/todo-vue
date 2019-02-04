@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    :::::::::: TODOS :::::::::
+    <Header />
+    <router-view></router-view>
     <ul>
       <Item
         :todo='todo'
@@ -16,6 +17,7 @@
 </template>
 
 <script>
+import Header from './components/Header';
 import Item from './components/Item';
 
 export default {
@@ -23,7 +25,7 @@ export default {
   data: () => ({
     todos: ['', 'Buy Groceries', 'Sell Car', 'Upgrade Bicycle']
   }),
-  components: { Item },
+  components: { Header, Item },
   computed: {
     count: function() {
       const length = this.todos.length - 1;
