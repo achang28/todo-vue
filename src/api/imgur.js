@@ -9,6 +9,7 @@ export default {
       response_type: 'token'
     };
 
-    window.location = `${ROOT_URL}/oauth2/authorize?${qs.stringify(querystring)}`;
+    const url = `${ROOT_URL}/oauth2/authorize?${qs.stringify(querystring)}`
+    window.location = url;
   }
 };

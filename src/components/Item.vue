@@ -1,10 +1,18 @@
 <template>
-  <li>
-    <input
-      :value='todoValue'
-      @input='onInput'
-      @blur="checkItem" />
-    <a v-if='allowedIndex' @click='remove' href="#">X</a>
+  <li class="field">
+    <div class="ui fluid action input">
+      <input
+        type="text"
+        @input='onInput'
+        @blur="checkItem"
+        :value='todoValue' />
+      <button
+        @click='remove'
+        v-if='allowedIndex'
+        class="ui icon button red">
+        <i class="window close icon" />
+      </button>
+    </div>
   </li>
 </template>
 
@@ -33,6 +41,7 @@
   export default {
     name: "Item",
     props: {
+      isDone: Boolean,
       todo: String,
       index: Number,
       createFn: Function,

@@ -1,8 +1,8 @@
 <template>
-  <div id="app">
-    <Header />
+  <form id="app" class="ui raised very padded text container segment">
+    <AppHeader />
     <router-view></router-view>
-    <ul>
+    <ol class="ui form">
       <Item
         :todo='todo'
         :index='index'
@@ -11,13 +11,13 @@
         :removeFn='remove'
         :updateFn='update'
         v-for='(todo, index) in todos' />
-    </ul>
+    </ol>
     <div>{{count}}</div>
-  </div>
+  </form>
 </template>
 
 <script>
-import Header from './components/Header';
+import AppHeader from './components/AppHeader';
 import Item from './components/Item';
 
 export default {
@@ -25,7 +25,7 @@ export default {
   data: () => ({
     todos: ['', 'Buy Groceries', 'Sell Car', 'Upgrade Bicycle']
   }),
-  components: { Header, Item },
+  components: { AppHeader, Item },
   computed: {
     count: function() {
       const length = this.todos.length - 1;

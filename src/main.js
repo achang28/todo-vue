@@ -8,10 +8,12 @@ Vue.use(VueRouter);
 Vue.config.productionTip = false;
 
 const router = new VueRouter({
+  mode: 'history',
   routes: [
     { path: '/oauth2/callback', component: AuthHandler }
   ]
 });
+
 new Vue({
   router,
   store,
