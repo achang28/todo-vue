@@ -1,10 +1,12 @@
 <template>
   <div class="ui secondary pointing menu">
-    <a :index='index'
-       :option='option'
-       @click='setActive'
-       v-for='(option, index) in menuOptions'
-       :class="index === activeIndex ? 'active item' : 'item'">{{option}}</a>
+    <MenuOption
+      :index='index'
+      :option='option'
+      :key='option.etag'
+      :setActive='setActive'
+      :activeIndex='activeIndex'
+      v-for='(option, index) in menuOptions' />
     <span class='right menu'>
       <a v-if="isLoggedIn" href="#" @click="logout">Logout</a>
       <a v-else href="#" class="ui item" @click="login">Login</a>
@@ -14,24 +16,28 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex';
+  import MenuOption from './MenuOption';
+
+  // import _get from 'lodash.get';
 
   export default {
     data: () => ({
       menuOptions: ['All', 'Active', 'Done'],
       activeIndex: 0
     }),
-    name: "Header",
+    name: "AppHeader",
+    components: { MenuOption },
     computed: {
       ...mapGetters(['isLoggedIn'])
     },
     methods: {
       ...mapActions(['login', 'logout']),
-      setActive() {
-        debugger;
+      setActive(el) {
+        this.activeIndex = parseInt(el.target.dataset.index);
       }
     },
-    beforeUpdate() {
-      window.console.log("*** Header is being updated ***");
+    updated() {
+      window.console.log(`*** Active index is now ${this.activeIndex} ***`);
     }
   }
 </script>
