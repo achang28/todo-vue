@@ -1,40 +1,58 @@
-const state = { todos: [] };
+const initialState = {
+  todos: ['', 'Buy Groceries', 'Sell Car', 'Upgrade Bicycle']
+};
+
 const getters = {
-  todos(isDone) {
+  count(state) {
+    const length = state.todos.length - 1;
+    var desc = '';
+
+    if (length === 1) {
+      desc = `${length} item`;
+    } else if (length > 1) {
+      desc = `${length} items`;
+    }
+
+    return desc;
+  },
+  todos(state) {
     // true || false
-    if (isDone === undefined) {
-      return state.todos;
-    } else {
-      return state.todos.filter(todo => todo.isDone === isDone);
+    return function(isDone) {
+      if (isDone === undefined) {
+        return state.todos;
+      } else {
+        return state.todos.filter(todo => todo.isDone === isDone);
+      }
     }
   }
 };
 
 const actions = {
-  addTodo() {
+  create({commit, newTodo}) {
+    const newTodoList = state.todos.concat([newTodo]);
 
+    commit ('updateTodo', index, '');
+    commit('setTodos', newTodoList);
   },
-  removeTodo() {
-
+  edit({commit}, index, newValue) {
+    commit('updateTodo', index, newValue);
   },
-  editTodo() {
+  remove({commit}, index) {
+    const left = state.todos.slice(0, index);
+    const right = state.todos.slice(index +1);
+    const updatedTodos = left.concat(right);
 
-  },
-  saveTodo() {
-
+    commit('setTodos', updatedTodos);
   }
 };
 
 const mutations = {
-  changeTodo(index) {
-
+  setTodos(state, newTodos) {
+    state.todos = newTodos;
   },
-  increaseList(index) {
-
-  },
-  decreaseList(index) {
-
+  updateTodo(state, index, newValue) {
+    state.todos[index] = newValue;
   }
 };
 
-export default ( state, getters, actions, mutations );
+export default { state: initialState, getters, actions, mutations };

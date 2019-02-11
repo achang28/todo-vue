@@ -1,7 +1,7 @@
 import api from '../../api/imgur';
 import qs from 'qs';
 
-const state = {
+const initialState = {
   token: null
 };
 
@@ -36,4 +36,4 @@ const mutations = {
   }
 };
 
-export default { state, getters, actions, mutations };
+export default { state: initialState, getters, actions, mutations };
