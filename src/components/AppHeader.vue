@@ -4,7 +4,6 @@
       :index='index'
       :option='option'
       :key='option.etag'
-      :setActive='setActive'
       :activeIndex='activeIndex'
       v-for='(option, index) in menuOptions' />
     <span class='right menu'>
@@ -17,24 +16,22 @@
 <script>
   import { mapActions, mapGetters } from 'vuex';
   import MenuOption from './MenuOption';
-
   // import _get from 'lodash.get';
 
   export default {
     data: () => ({
-      menuOptions: ['All', 'Active', 'Done'],
-      activeIndex: 0
+      menuOptions: ['All', 'Active', 'Done']
     }),
     name: "AppHeader",
     components: { MenuOption },
     computed: {
-      ...mapGetters(['isLoggedIn'])
+      ...mapGetters(['isLoggedIn', 'activeFilter'])
     },
     methods: {
-      ...mapActions(['login', 'logout']),
-      setActive(el) {
-        this.activeIndex = parseInt(el.target.dataset.index);
-      }
+      ...mapActions(['login', 'logout'])
+      // setActive(el) {
+      //   this.activeIndex = parseInt(el.target.dataset.index);
+      // }
     },
     updated() {
       window.console.log(`*** Active index is now ${this.activeIndex} ***`);

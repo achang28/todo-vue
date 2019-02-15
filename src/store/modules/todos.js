@@ -1,8 +1,10 @@
 const initialState = {
+  activeFilter: 0,
   todos: ['', 'Buy Groceries', 'Sell Car', 'Upgrade Bicycle']
 };
 
 const getters = {
+  activeFilter: state => state.activeFilter,
   count(state) {
     const length = state.todos.length - 1;
     var desc = '';
@@ -43,6 +45,9 @@ const actions = {
     const updatedTodos = left.concat(right);
 
     commit('setTodos', updatedTodos);
+  },
+  filter({commit}, index) {
+    commit('setActiveIndex', index);
   }
 };
 
@@ -52,6 +57,9 @@ const mutations = {
   },
   updateTodo(state, index, newValue) {
     state.todos[index] = newValue;
+  },
+  setActiveIndex(state, index) {
+    state.activeFilter = index;
   }
 };
 

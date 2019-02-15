@@ -1,19 +1,20 @@
 <template>
-  <a :class='setClass'
-     @click='setActive'
+  <a @click='filter'
+     :class='setClass'
      :data-index='setIndex'>{{option}}</a>
 </template>
 
 <script>
+  import { mapActions, mapGetters } from 'vuex';
+
   export default {
     name: "MenuOption",
     props: {
       index: Number,
-      option: String,
-      setActive: Function,
-      activeIndex: Number
+      option: String
     },
     computed: {
+      ...mapGetters(['activeFilter']),
       setIndex() {
         return this.index;
       },
@@ -22,7 +23,8 @@
           ? 'active item'
           : 'item';
       }
-    }
+    },
+    methods: mapActions(['filter'])
   }
 </script>
 
